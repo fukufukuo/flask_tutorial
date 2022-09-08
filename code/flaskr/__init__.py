@@ -13,7 +13,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'), #インスタンスフォルダ直下に、SQLiteデータベースを配置
     )
   
-  if test_config is none:
+  if test_config is None:
     # instance configを読み込む テスト環境じゃないとき
     app.config.from_pyfile('config.py', silent=True)
   else:
@@ -25,5 +25,12 @@ def create_app(test_config=None):
     os.makedirs(app.instance_path) #インスタンスパスのフォルダを作成
   except OSError:
     pass #すでにインスタンスパスのフォルダが存在するときはエラーを吐く。その場合は何も実行しない
+
+  # a simple page that says hello
+  @app.route('/hello')
+  def hello():
+    return 'Hello, World!'
+  
+  return app
 
     

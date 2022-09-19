@@ -31,5 +31,10 @@ def init_db():
   with current_app.open_resource('schema.sql') as f: #アプリケーションからの相対パスで指定したSQLファイルを開く。同じ階層にSQLファイルがあるのでこのように書ける
     db.executescript(f.read().decode('utf8')) #読み込んだものはバイト列になるので、utf8でデコード(文字列化)する
 
-@click.command('init-db')
+@click.command('init-db') #このデコレータはこのスクリプトの中には書いていないので、clickで標準で準備されている関数のはず。
 @with_appcontext
+#理解のためには、元関数も必要だと思うので、内容を理解はしていないが写経する。
+def init_db_command():
+  """Clear the existing data and create new tables.""" #突然文字列書いていいんですか？
+  init_db()
+  click.echo('Initialized the database.')

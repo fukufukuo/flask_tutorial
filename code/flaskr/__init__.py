@@ -31,6 +31,10 @@ def create_app(test_config=None):
   def hello():
     return 'Hello, World!'
   
+  #db.pyで定義した関数を実行→アプリケーションに、db.pyで定義した関数が登録される
+  from . import db
+  db.init_app(app)
+
   return app
 
     

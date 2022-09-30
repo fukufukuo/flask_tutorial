@@ -32,9 +32,15 @@ def init_db():
     db.executescript(f.read().decode('utf8')) #読み込んだものはバイト列になるので、utf8でデコード(文字列化)する
 
 @click.command('init-db') #このデコレータはこのスクリプトの中には書いていないので、clickで標準で準備されている関数のはず。
-@with_appcontext
+@with_appcontext #アプリ実行のコンテクスト(環境)で使われることを保証する(?)
 #理解のためには、元関数も必要だと思うので、内容を理解はしていないが写経する。
 def init_db_command():
-  """Clear the existing data and create new tables.""" #突然文字列書いていいんですか？
+  """Clear the existing data and create new tables.""" #突然文字列書いていいんですか？・・ドキュメントストリング参照
   init_db()
   click.echo('Initialized the database.')
+
+#flaskrアプリケーションに、close_db()と、init_db_command()を登録する
+def init_app(app):
+  app.teardown_appcontext(close_db) #アプリケーションのcontextが終了するときに呼び出す関数を登録する
+  app.cli.add_command(init_db_command)
+#→factoryでこの関数をimportする。__init__.py参照

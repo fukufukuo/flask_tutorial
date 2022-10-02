@@ -4,7 +4,7 @@ import os
 from flask import Flask
 #flaskパッケージから、Flaskクラスをインポート
 
-def create_app(test_config=None):
+def create_app(test_config=None): #これがいわゆるfactory
 #create_app()という変数の定義開始 引数test_configのデフォルト値がNone
   app = Flask(__name__, instance_relative_config=True)
   #appにFlaskインスタンスを代入
@@ -34,6 +34,9 @@ def create_app(test_config=None):
   #db.pyで定義した関数を実行→アプリケーションに、db.pyで定義した関数が登録される
   from . import db
   db.init_app(app)
+
+  from . import auth #このファイルと同じ階層にあるauth.pyをインポート
+  app.register_blueprint(auth.bp) #auth.py内のbpをblueprintとして登録
 
   return app
 
